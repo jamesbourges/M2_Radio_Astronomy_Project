@@ -578,9 +578,29 @@ def perform_residual_analysis(tpi_file, img_file, lat_str, lon_str, height_m):
     residue = user_norm - ref_norm
     
     fig, ax = plt.subplots(1, 3, figsize=(15, 5))
-    ax[0].imshow(user_norm, origin='lower', cmap='inferno'); ax[0].set_title("User (Cleaned)")
-    ax[1].imshow(ref_norm, origin='lower', cmap='inferno'); ax[1].set_title("Reference")
-    ax[2].imshow(residue, origin='lower', cmap='seismic', vmin=-0.5, vmax=0.5); ax[2].set_title("Residuals")
+    
+    # Plot 1: User
+    ax[0].imshow(user_norm, origin='lower', cmap='inferno')
+    ax[0].set_title("User (Cleaned)")
+    
+    # Plot 2: Reference
+    ax[1].imshow(ref_norm, origin='lower', cmap='inferno')
+    ax[1].set_title("Reference")
+    
+    # Plot 3: Residuals (with colorbar)
+    im3 = ax[2].imshow(residue, origin='lower', cmap='seismic', vmin=-0.5, vmax=0.5)
+    ax[2].set_title("Residuals")
+    
+    # Add the heat scale to the 3rd axis
+    cbar = fig.colorbar(im3, ax=ax[2], fraction=0.046, pad=0.04)
+    cbar.set_label("Normalized Difference")
+    
+    # Add arbitrary X and Y labels to all subplots
+    for i in range(3):
+        ax[i].set_xlabel("X (pixels)")
+        ax[i].set_ylabel("Y (pixels)")
+    
+    plt.tight_layout()
     plt.show()
 
 # ==========================================
